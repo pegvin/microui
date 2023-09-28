@@ -5,7 +5,6 @@
 *.exe
 *.swp
 *.out
-*.inl
 *.log
 *~
 *.obj
