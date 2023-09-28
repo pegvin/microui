@@ -1,3 +1,4 @@
+CC=gcc
 CFLAGS=-Wall -std=c99 -pedantic -O3 -g -I ../../ `pkg-config sdl2 --cflags`
 LFLAGS=`pkg-config sdl2 --libs` -lm
 
@@ -23,7 +24,7 @@ BIN  := example.bin
 
 $(BIN): $(OBJS)
 	@echo "LD -" $<
-	@gcc $(OBJS) $(LFLAGS) -o $@
+	@$(CC) $(OBJS) $(LFLAGS) -o $@
 
 all: $(BIN)
 
