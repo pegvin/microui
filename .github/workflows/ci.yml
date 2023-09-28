@@ -12,7 +12,7 @@ jobs:
           - os: ubuntu-22.04
             arch: x64
             cc: gcc
-            pkgs: gcc xorg-dev
+            pkgs: gcc xorg-dev libsdl2-dev libsdl2-2.0-0
 
           - os: macos-12
             arch: x86_64
