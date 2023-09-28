@@ -1,0 +1,49 @@
+name: ci
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-2022
+            arch: x64
+            cc: clang
+
+          - os: ubuntu-22.04
+            arch: x64
+            cc: gcc
+            pkgs: gcc xorg-dev
+
+          - os: macos-12
+            arch: x86_64
+            cc: clang
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install Deps (Linux)
+      if: ${{ matrix.os == 'ubuntu-22.04' }}
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install ${{ matrix.pkgs }}
+
+    - name: Build
+      run: |
+        cd ./examples/SDL2_OpenGL
+        make all CC=${{ matrix.cc }}
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.os }}
+        if-no-files-found: error
+        path: |
+          ./examples/SDL2_OpenGL/
+
