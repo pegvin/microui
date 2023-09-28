@@ -9,10 +9,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: windows-2022
-            arch: x64
-            cc: clang
-
           - os: ubuntu-22.04
             arch: x64
             cc: gcc
@@ -21,6 +17,7 @@ jobs:
           - os: macos-12
             arch: x86_64
             cc: clang
+            pkgs: sdl2
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -33,6 +30,11 @@ jobs:
       run: |
         sudo apt-get update -y
         sudo apt-get install ${{ matrix.pkgs }}
+
+    - name: Install Deps (MacOS)
+      if: ${{ matrix.os == 'macos-12' }}
+      run: |
+        brew install ${{ matrix.pkgs }}
 
     - name: Build
       run: |
